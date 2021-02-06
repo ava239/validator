@@ -17,4 +17,9 @@ class Validator
     {
         return $this->make('string');
     }
+
+    public function number(): ValidatorInterface
+    {
+        return $this->make('number');
+    }
 }

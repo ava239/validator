@@ -27,9 +27,4 @@ class Validator implements ValidatorInterface
             return $acc && $fn($data);
         }, true);
     }
-
-    public function required(): ValidatorInterface
-    {
-        return $this->addValidator(fn($data) => (bool) $data);
-    }
 }

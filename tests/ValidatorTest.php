@@ -3,6 +3,7 @@
 namespace Hexlet\Validator\Tests;
 
 use Hexlet\Validator\Validator;
+use Hexlet\Validator\Validators\NumberValidator;
 use Hexlet\Validator\Validators\StringValidator;
 use PHPUnit\Framework\TestCase;
 
@@ -37,5 +38,27 @@ class ValidatorTest extends TestCase
 
         $this->assertTrue($schema->contains('what')->isValid('what does the fox say'));
         $this->assertFalse($schema->contains('whatthe')->isValid('what does the fox say'));
+    }
+
+    public function testNumber(): void
+    {
+        $v = new Validator();
+
+        /** @var NumberValidator $schema */
+        $schema = $v->number();
+
+        $this->assertTrue($schema->isValid(null));
+
+        $schema->required();
+
+        $this->assertFalse($schema->isValid(null));
+        $this->assertTrue($schema->isValid(7));
+
+        $this->assertTrue($schema->positive()->isValid(10));
+
+        $schema->range(-5, 5);
+
+        $this->assertFalse($schema->isValid(-3));
+        $this->assertTrue($schema->isValid(5));
     }
 }

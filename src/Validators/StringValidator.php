@@ -21,4 +21,9 @@ class StringValidator extends Validator implements ValidatorInterface
             return mb_strlen($data) >= $length;
         });
     }
+
+    public function required(): ValidatorInterface
+    {
+        return $this->addValidator(fn($data) => (bool) $data);
+    }
 }

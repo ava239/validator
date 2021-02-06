@@ -6,8 +6,6 @@ use Closure;
 
 class NumberValidator extends Validator implements ValidatorInterface
 {
-    protected string $type = 'string';
-
     public function positive(): ValidatorInterface
     {
         return $this->addValidator(function ($data) {

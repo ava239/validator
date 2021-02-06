@@ -6,8 +6,6 @@ use Closure;
 
 class StringValidator extends Validator implements ValidatorInterface
 {
-    protected string $type = 'string';
-
     public function contains(string $text): ValidatorInterface
     {
         return $this->addValidator(function ($data) use ($text) {

@@ -7,7 +7,6 @@ use Closure;
 interface ValidatorInterface
 {
     public function addValidator(Closure $validator): ValidatorInterface;
-    public function getType(): string;
 
     /**
      * @param mixed $data

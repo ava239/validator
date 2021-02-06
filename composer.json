@@ -1,22 +1,22 @@
 {
-  "name": "hexlet/php-package",
-  "bin": ["bin/php-package"],
+  "name": "hexlet/code",
+  "bin": ["bin/validator"],
   "type": "library",
   "authors": [
     {
-      "name": "Kirill Mokevnin",
-      "email": "mokevnin@gmail.com"
+      "name": "Dmitrii Oliferchuk",
+      "email": "ava239@yandex.ru"
     }
   ],
-  "description": "hexlet php-package",
+  "description": "data validator",
   "license": "MIT",
   "scripts": {
     "test": "phpunit tests"
   },
   "autoload": {
     "psr-4": {
-      "Php\\Package\\": "src",
-      "Php\\Package\\Tests\\": "tests"
+      "Hexlet\\Validator\\": "src",
+      "Hexlet\\Validator\\Tests\\": "tests"
     }
   },
   "require": {

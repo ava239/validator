@@ -21,4 +21,19 @@ class ArrayValidator extends Validator implements ValidatorInterface
         $validator = $this->addValidator(fn($data) => is_array($data));
         return $validator;
     }
+
+    /**
+     * @param  ValidatorInterface[]  $shape
+     * @return ArrayValidator
+     */
+    public function shape(array $shape): ArrayValidator
+    {
+        /** @var ArrayValidator $validator */
+        $validator = $this->addValidator(fn($data) => array_reduce(
+            array_keys($shape),
+            fn($acc, $field) => $acc && $shape[$field]->isValid($data[$field]),
+            true
+        ));
+        return $validator;
+    }
 }

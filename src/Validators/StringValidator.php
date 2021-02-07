@@ -2,14 +2,14 @@
 
 namespace Hexlet\Validator\Validators;
 
-use Closure;
-
-class StringValidator extends Validator implements ValidatorInterface
+class StringValidator extends ValidatorBase implements ValidatorInterface
 {
+    protected string $type = 'string';
+
     public function contains(string $text): StringValidator
     {
         /** @var StringValidator $validator */
-        $validator = $this->addValidator(function ($data) use ($text) {
+        $validator = $this->applyValidator(function ($data) use ($text) {
             return str_contains($data, $text);
         });
         return $validator;
@@ -18,7 +18,7 @@ class StringValidator extends Validator implements ValidatorInterface
     public function minLength(int $length): StringValidator
     {
         /** @var StringValidator $validator */
-        $validator = $this->addValidator(function ($data) use ($length) {
+        $validator = $this->applyValidator(function ($data) use ($length) {
             return mb_strlen($data) >= $length;
         });
         return $validator;
@@ -27,7 +27,7 @@ class StringValidator extends Validator implements ValidatorInterface
     public function required(): StringValidator
     {
         /** @var StringValidator $validator */
-        $validator = $this->addValidator(fn($data) => (bool) $data);
+        $validator = $this->applyValidator(fn($data) => (bool) $data);
         return $validator;
     }
 }

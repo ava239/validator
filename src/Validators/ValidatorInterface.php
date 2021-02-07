@@ -2,12 +2,11 @@
 
 namespace Hexlet\Validator\Validators;
 
-use Closure;
+use Hexlet\Validator\Validator;
 
 interface ValidatorInterface
 {
-    public function __construct(array $validators = []);
-    public function addValidator(Closure $validator): ValidatorInterface;
+    public function __construct(Validator $parent, array $validators = []);
 
     /**
      * @param mixed $data

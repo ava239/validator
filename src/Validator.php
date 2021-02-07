@@ -22,4 +22,9 @@ class Validator
     {
         return $this->make('number');
     }
+
+    public function array(): ValidatorInterface
+    {
+        return $this->make('array');
+    }
 }

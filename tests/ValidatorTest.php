@@ -3,6 +3,7 @@
 namespace Hexlet\Validator\Tests;
 
 use Hexlet\Validator\Validator;
+use Hexlet\Validator\Validators\ArrayValidator;
 use Hexlet\Validator\Validators\NumberValidator;
 use Hexlet\Validator\Validators\StringValidator;
 use PHPUnit\Framework\TestCase;
@@ -60,5 +61,26 @@ class ValidatorTest extends TestCase
 
         $this->assertFalse($schema->isValid(-3));
         $this->assertTrue($schema->isValid(5));
+    }
+
+    public function testArray(): void
+    {
+        $v = new Validator();
+
+        /** @var ArrayValidator $schema */
+        $schema = $v->array();
+
+        /** @var ArrayValidator $schema */
+        $schema = $schema->required();
+
+        $this->assertFalse($schema->isValid(null));
+
+        $this->assertTrue($schema->isValid([]));
+        $this->assertTrue($schema->isValid(['hexlet']));
+
+        $schema->sizeof(2);
+
+        $this->assertFalse($schema->isValid(['hexlet']));
+        $this->assertTrue($schema->isValid(['hexlet', 'code-basics']));
     }
 }

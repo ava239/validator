@@ -6,22 +6,28 @@ use Closure;
 
 class StringValidator extends Validator implements ValidatorInterface
 {
-    public function contains(string $text): ValidatorInterface
+    public function contains(string $text): StringValidator
     {
-        return $this->addValidator(function ($data) use ($text) {
+        /** @var StringValidator $validator */
+        $validator = $this->addValidator(function ($data) use ($text) {
             return str_contains($data, $text);
         });
+        return $validator;
     }
 
-    public function minLength(int $length): ValidatorInterface
+    public function minLength(int $length): StringValidator
     {
-        return $this->addValidator(function ($data) use ($length) {
+        /** @var StringValidator $validator */
+        $validator = $this->addValidator(function ($data) use ($length) {
             return mb_strlen($data) >= $length;
         });
+        return $validator;
     }
 
-    public function required(): ValidatorInterface
+    public function required(): StringValidator
     {
-        return $this->addValidator(fn($data) => (bool) $data);
+        /** @var StringValidator $validator */
+        $validator = $this->addValidator(fn($data) => (bool) $data);
+        return $validator;
     }
 }

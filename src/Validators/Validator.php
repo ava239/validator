@@ -9,10 +9,15 @@ class Validator implements ValidatorInterface
 
     protected array $validators = [];
 
+    public function __construct(array $validators = [])
+    {
+        $this->validators = $validators;
+    }
+
     public function addValidator(Closure $validator): ValidatorInterface
     {
-        $this->validators[] = $validator;
-        return $this;
+        $validators = [...$this->validators, $validator];
+        return new static($validators);
     }
 
     public function isValid($data): bool

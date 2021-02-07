@@ -6,6 +6,7 @@ use Closure;
 
 interface ValidatorInterface
 {
+    public function __construct(array $validators = []);
     public function addValidator(Closure $validator): ValidatorInterface;
 
     /**

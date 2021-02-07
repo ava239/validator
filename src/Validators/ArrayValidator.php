@@ -6,15 +6,19 @@ use Closure;
 
 class ArrayValidator extends Validator implements ValidatorInterface
 {
-    public function sizeof(int $size): ValidatorInterface
+    public function sizeof(int $size): ArrayValidator
     {
-        return $this->addValidator(function ($data) use ($size) {
+        /** @var ArrayValidator $validator */
+        $validator = $this->addValidator(function ($data) use ($size) {
             return count($data) >= $size;
         });
+        return $validator;
     }
 
-    public function required(): ValidatorInterface
+    public function required(): ArrayValidator
     {
-        return $this->addValidator(fn($data) => is_array($data));
+        /** @var ArrayValidator $validator */
+        $validator = $this->addValidator(fn($data) => is_array($data));
+        return $validator;
     }
 }

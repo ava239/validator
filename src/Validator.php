@@ -2,6 +2,9 @@
 
 namespace Hexlet\Validator;
 
+use Hexlet\Validator\Validators\ArrayValidator;
+use Hexlet\Validator\Validators\NumberValidator;
+use Hexlet\Validator\Validators\StringValidator;
 use Hexlet\Validator\Validators\ValidatorInterface;
 
 class Validator
@@ -13,18 +16,24 @@ class Validator
         return new $className();
     }
 
-    public function string(): ValidatorInterface
+    public function string(): StringValidator
     {
-        return $this->make('string');
+        /** @var StringValidator $validator */
+        $validator = $this->make('string');
+        return $validator;
     }
 
-    public function number(): ValidatorInterface
+    public function number(): NumberValidator
     {
-        return $this->make('number');
+        /** @var NumberValidator $validator */
+        $validator = $this->make('number');
+        return $validator;
     }
 
-    public function array(): ValidatorInterface
+    public function array(): ArrayValidator
     {
-        return $this->make('array');
+        /** @var ArrayValidator $validator */
+        $validator = $this->make('array');
+        return $validator;
     }
 }

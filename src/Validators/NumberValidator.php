@@ -6,22 +6,28 @@ use Closure;
 
 class NumberValidator extends Validator implements ValidatorInterface
 {
-    public function positive(): ValidatorInterface
+    public function positive(): NumberValidator
     {
-        return $this->addValidator(function ($data) {
+        /** @var NumberValidator $validator */
+        $validator = $this->addValidator(function ($data) {
             return $data >= 0;
         });
+        return $validator;
     }
 
-    public function range(int $min, int $max): ValidatorInterface
+    public function range(int $min, int $max): NumberValidator
     {
-        return $this->addValidator(function ($data) use ($min, $max) {
+        /** @var NumberValidator $validator */
+        $validator = $this->addValidator(function ($data) use ($min, $max) {
             return $data >= $min && $data <= $max;
         });
+        return $validator;
     }
 
-    public function required(): ValidatorInterface
+    public function required(): NumberValidator
     {
-        return $this->addValidator(fn($data) => is_integer($data));
+        /** @var NumberValidator $validator */
+        $validator = $this->addValidator(fn($data) => is_integer($data));
+        return $validator;
     }
 }

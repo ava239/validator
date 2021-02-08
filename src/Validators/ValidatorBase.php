@@ -44,7 +44,7 @@ class ValidatorBase implements ValidatorInterface
     public function isValid($data): bool
     {
         return array_reduce($this->validators, function ($acc, $fn) use ($data): bool {
-            return $acc && (bool) $fn($data);
+            return (bool) $acc && (bool) $fn($data);
         }, true);
     }
 }

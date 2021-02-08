@@ -27,7 +27,7 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
     public function required(): StringValidator
     {
         /** @var StringValidator $validator */
-        $validator = $this->applyValidator(fn($data) => (bool) $data);
+        $validator = $this->applyValidator(fn($data) => is_string($data) && mb_strlen($data) > 0);
         return $validator;
     }
 }

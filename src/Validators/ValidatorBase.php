@@ -30,9 +30,12 @@ class ValidatorBase implements ValidatorInterface
         );
     }
 
-    protected function applyValidator(Closure $validator): ValidatorInterface
+    protected function applyValidator(Closure $validator, bool $mutate = false): ValidatorInterface
     {
         $validators = [...$this->validators, $validator];
+        if ($mutate) {
+            $this->validators = $validators;
+        }
         return new static($this->parent, $validators);
     }
 

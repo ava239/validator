@@ -12,11 +12,11 @@ class Validator
 {
     private array $customValidators = [];
 
-    public function make(string $type): ValidatorInterface
+    public function make(string $type, array $validators = []): ValidatorInterface
     {
         $typeName = ucfirst($type);
         $className = __NAMESPACE__ . "\\Validators\\{$typeName}Validator";
-        return new $className($this);
+        return new $className($this, $validators);
     }
 
     public function addValidator(string $type, string $name, Closure $validator): void
@@ -36,7 +36,7 @@ class Validator
     public function string(): StringValidator
     {
         /** @var StringValidator $validator */
-        $validator = $this->make('string');
+        $validator = $this->make('string', [fn($data) => is_string($data)]);
         return $validator;
     }
 

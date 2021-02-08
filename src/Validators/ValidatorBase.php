@@ -43,9 +43,6 @@ class ValidatorBase implements ValidatorInterface
 
     public function isValid($data): bool
     {
-        if (empty($this->validators)) {
-            return $data === null;
-        }
         return array_reduce($this->validators, function ($acc, $fn) use ($data) {
             return $acc && $fn($data);
         }, true);

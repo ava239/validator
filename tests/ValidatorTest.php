@@ -67,6 +67,8 @@ class ValidatorTest extends TestCase
 
         $schema = $v->array();
 
+        $this->assertFalse($schema->isValid([]));
+
         $schema = $schema->required();
 
         $this->assertFalse($schema->isValid(null));

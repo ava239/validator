@@ -36,4 +36,14 @@ class ArrayValidator extends ValidatorBase implements ValidatorInterface
         ), 'shape');
         return $validator;
     }
+
+    public function isValid($data): bool
+    {
+        if (empty($this->validators)) {
+            return (bool) $data;
+        }
+        return array_reduce($this->validators, function ($acc, $fn) use ($data) {
+            return $acc && $fn($data);
+        }, true);
+    }
 }

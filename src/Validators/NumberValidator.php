@@ -11,7 +11,7 @@ class NumberValidator extends ValidatorBase implements ValidatorInterface
         /** @var NumberValidator $validator */
         $validator = $this->applyValidator(function ($data) {
             return $data >= 0;
-        });
+        }, true);
         return $validator;
     }
 

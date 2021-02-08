@@ -27,7 +27,7 @@ class NumberValidator extends ValidatorBase implements ValidatorInterface
     public function required(): NumberValidator
     {
         /** @var NumberValidator $validator */
-        $validator = $this->applyValidator(fn($data) => is_integer($data));
+        $validator = $this->applyValidator(fn($data) => is_integer($data), true);
         return $validator;
     }
 }

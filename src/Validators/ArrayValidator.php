@@ -18,7 +18,7 @@ class ArrayValidator extends ValidatorBase implements ValidatorInterface
     public function required(): ArrayValidator
     {
         /** @var ArrayValidator $validator */
-        $validator = $this->applyValidator(fn($data) => is_array($data));
+        $validator = $this->applyValidator(fn($data) => is_array($data), true);
         return $validator;
     }
 

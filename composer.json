@@ -26,7 +26,6 @@
     "phpstan/phpstan": "^0.12.65"
   },
   "require-dev": {
-    "psy/psysh": "@stable",
     "phpstan/phpstan-phpunit": "^0.12.16",
     "phpstan/extension-installer": "^1.0",
     "symfony/var-dumper": "^4.0",

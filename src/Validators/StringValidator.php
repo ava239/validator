@@ -9,7 +9,7 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
     public function contains(string $text): StringValidator
     {
         /** @var StringValidator $validator */
-        $validator = $this->applyValidator(function ($data) use ($text) {
+        $validator = $this->applyValidator(function ($data) use ($text): bool {
             return str_contains($data, $text);
         }, 'contains');
         return $validator;
@@ -18,7 +18,7 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
     public function minLength(int $length): StringValidator
     {
         /** @var StringValidator $validator */
-        $validator = $this->applyValidator(function ($data) use ($length) {
+        $validator = $this->applyValidator(function ($data) use ($length): bool {
             return mb_strlen($data) >= $length;
         }, 'minLength');
         return $validator;

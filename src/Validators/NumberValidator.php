@@ -9,7 +9,7 @@ class NumberValidator extends ValidatorBase implements ValidatorInterface
     public function positive(): NumberValidator
     {
         /** @var NumberValidator $validator */
-        $validator = $this->applyValidator(function ($data) {
+        $validator = $this->applyValidator(function ($data): bool {
             return !is_int($data) || $data > 0;
         }, 'positive', true);
         return $validator;
@@ -18,7 +18,7 @@ class NumberValidator extends ValidatorBase implements ValidatorInterface
     public function range(int $min, int $max): NumberValidator
     {
         /** @var NumberValidator $validator */
-        $validator = $this->applyValidator(function ($data) use ($min, $max) {
+        $validator = $this->applyValidator(function ($data) use ($min, $max): bool {
             return $data >= $min && $data <= $max;
         }, 'range');
         return $validator;

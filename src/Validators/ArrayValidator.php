@@ -9,7 +9,7 @@ class ArrayValidator extends ValidatorBase implements ValidatorInterface
     public function sizeof(int $size): ArrayValidator
     {
         /** @var ArrayValidator $validator */
-        $validator = $this->applyValidator(function ($data) use ($size) {
+        $validator = $this->applyValidator(function ($data) use ($size): bool {
             return count($data) >= $size;
         }, 'sizeof', true);
         return $validator;

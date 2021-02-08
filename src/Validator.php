@@ -43,7 +43,7 @@ class Validator
     public function number(): NumberValidator
     {
         /** @var NumberValidator $validator */
-        $validator = $this->make('number');
+        $validator = $this->make('number', [fn($data) => is_integer($data) || $data === null]);
         return $validator;
     }
 

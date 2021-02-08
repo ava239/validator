@@ -40,6 +40,6 @@ class ValidatorBase implements ValidatorInterface
     {
         return array_reduce($this->validators, function ($acc, $fn) use ($data) {
             return $acc && $fn($data);
-        }, true);
+        }, count($this->validators) > 0);
     }
 }

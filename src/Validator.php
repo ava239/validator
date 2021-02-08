@@ -36,7 +36,7 @@ class Validator
     public function string(): StringValidator
     {
         /** @var StringValidator $validator */
-        $validator = $this->make('string', [fn($data) => is_string($data)]);
+        $validator = $this->make('string');
         return $validator;
     }
 

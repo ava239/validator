@@ -10,7 +10,7 @@ class NumberValidator extends ValidatorBase implements ValidatorInterface
     {
         /** @var NumberValidator $validator */
         $validator = $this->applyValidator(function ($data) {
-            return $data > 0;
+            return !is_int($data) || $data > 0;
         }, 'positive', true);
         return $validator;
     }

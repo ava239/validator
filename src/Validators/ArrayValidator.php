@@ -11,7 +11,7 @@ class ArrayValidator extends ValidatorBase implements ValidatorInterface
         /** @var ArrayValidator $validator */
         $validator = $this->applyValidator(function ($data) use ($size) {
             return count($data) >= $size;
-        }, 'sizeof');
+        }, 'sizeof', true);
         return $validator;
     }
 
@@ -33,7 +33,7 @@ class ArrayValidator extends ValidatorBase implements ValidatorInterface
             array_keys($shape),
             fn($acc, $field) => $acc && $shape[$field]->isValid($data[$field]),
             true
-        ), 'shape');
+        ), 'shape', true);
         return $validator;
     }
 }

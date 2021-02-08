@@ -26,13 +26,15 @@ class ValidatorBase implements ValidatorInterface
     public function test(string $name, ...$params): ValidatorInterface
     {
         return $this->applyValidator(
-            fn($data) => $this->parent->getCustomValidator($this->type, $name)($data, ...$params)
+            fn($data) => $this->parent->getCustomValidator($this->type, $name)($data, ...$params),
+            $name
         );
     }
 
-    protected function applyValidator(Closure $validator, bool $mutate = false): ValidatorInterface
+    protected function applyValidator(Closure $validator, string $name, bool $mutate = false): ValidatorInterface
     {
-        $validators = [...$this->validators, $validator];
+        $validators = $this->validators;
+        $validators[$name] = $validator;
         if ($mutate) {
             $this->validators = $validators;
         }

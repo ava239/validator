@@ -11,7 +11,7 @@ class NumberValidator extends ValidatorBase implements ValidatorInterface
         /** @var NumberValidator $validator */
         $validator = $this->applyValidator(function ($data) {
             return $data >= 0;
-        }, true);
+        }, 'positive', true);
         return $validator;
     }
 
@@ -20,14 +20,14 @@ class NumberValidator extends ValidatorBase implements ValidatorInterface
         /** @var NumberValidator $validator */
         $validator = $this->applyValidator(function ($data) use ($min, $max) {
             return $data >= $min && $data <= $max;
-        });
+        }, 'range');
         return $validator;
     }
 
     public function required(): NumberValidator
     {
         /** @var NumberValidator $validator */
-        $validator = $this->applyValidator(fn($data) => is_integer($data), true);
+        $validator = $this->applyValidator(fn($data) => is_integer($data), 'required', true);
         return $validator;
     }
 }

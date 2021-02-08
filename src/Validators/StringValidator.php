@@ -11,7 +11,7 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
         /** @var StringValidator $validator */
         $validator = $this->applyValidator(function ($data) use ($text) {
             return str_contains($data, $text);
-        });
+        }, 'contains');
         return $validator;
     }
 
@@ -20,14 +20,14 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
         /** @var StringValidator $validator */
         $validator = $this->applyValidator(function ($data) use ($length) {
             return mb_strlen($data) >= $length;
-        });
+        }, 'minLength');
         return $validator;
     }
 
     public function required(): StringValidator
     {
         /** @var StringValidator $validator */
-        $validator = $this->applyValidator(fn($data) => mb_strlen($data) > 0, true);
+        $validator = $this->applyValidator(fn($data) => mb_strlen($data) > 0, 'required', true);
         return $validator;
     }
 }

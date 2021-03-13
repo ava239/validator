@@ -3,9 +3,6 @@
 namespace Hexlet\Validator\Tests;
 
 use Hexlet\Validator\Validator;
-use Hexlet\Validator\Validators\ArrayValidator;
-use Hexlet\Validator\Validators\NumberValidator;
-use Hexlet\Validator\Validators\StringValidator;
 use PHPUnit\Framework\TestCase;
 
 class ValidatorTest extends TestCase
@@ -24,8 +21,9 @@ class ValidatorTest extends TestCase
         $schema = $v->string();
 
         $this->assertTrue($schema->isValid(''));
+        $this->assertTrue($schema->isValid(null));
 
-        $schema = $schema->required();
+        $schema->required();
 
         $this->assertTrue($schema->isValid('what does the fox say'));
         $this->assertTrue($schema->isValid('hexlet'));
@@ -33,7 +31,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($schema->isValid(''));
 
         $this->assertFalse($schema->minLength(5)->isValid('what'));
-        $this->assertTrue($schema->minLength(5)->isValid('what does'));
+        $this->assertTrue($schema->isValid('what does'));
 
         $this->assertTrue($schema->contains('what')->isValid('what does the fox say'));
         $this->assertFalse($schema->contains('whatthe')->isValid('what does the fox say'));
@@ -46,16 +44,18 @@ class ValidatorTest extends TestCase
         $schema = $v->number();
 
         $this->assertTrue($schema->isValid(null));
+        $this->assertFalse($schema->isValid(false));
+
         $this->assertTrue($schema->positive()->isValid(null));
 
-        $schema = $schema->required();
+        $schema->required();
 
         $this->assertFalse($schema->isValid(null));
         $this->assertTrue($schema->isValid(7));
 
         $this->assertTrue($schema->positive()->isValid(10));
 
-        $schema = $schema->positive()->range(-5, 5);
+        $schema->positive()->range(-5, 5);
 
         $this->assertFalse($schema->isValid(-3));
         $this->assertTrue($schema->isValid(5));
@@ -70,14 +70,14 @@ class ValidatorTest extends TestCase
         $this->assertTrue($schema->isValid([]));
         $this->assertTrue($schema->isValid(null));
 
-        $schema = $schema->required();
+        $schema->required();
 
         $this->assertFalse($schema->isValid(null));
 
         $this->assertTrue($schema->isValid([]));
         $this->assertTrue($schema->isValid(['hexlet']));
 
-        $schema = $schema->sizeof(2);
+        $schema->sizeof(2);
 
         $this->assertFalse($schema->isValid(['hexlet']));
         $this->assertTrue($schema->isValid(['hexlet', 'code-basics']));

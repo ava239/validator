@@ -12,11 +12,6 @@ class ValidatorBase implements ValidatorInterface
     public $validators = [];
     public string $type;
 
-    public function __construct(Validator $parent)
-    {
-        $this->parent = $parent;
-    }
-
     public function addValidator(Closure $validator): void
     {
         $this->validators = [...$this->validators, $validator];

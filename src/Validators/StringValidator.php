@@ -10,7 +10,7 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
 
     public function __construct(Validator $parent)
     {
-        parent::__construct($parent);
+        $this->parent = $parent;
         $this->addValidator(fn($data) => is_string($data) || $data === null);
     }
 

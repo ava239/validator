@@ -10,47 +10,47 @@ use Hexlet\Validator\Validators\ValidatorInterface;
 
 class Validator
 {
-    private array $customValidators = [];
+    private array $customValidatorFns = [];
 
-    public function make(string $type, array $validators = []): ValidatorInterface
+    public function make(string $type): ValidatorInterface
     {
         $typeName = ucfirst($type);
         $className = __NAMESPACE__ . "\\Validators\\{$typeName}Validator";
-        return new $className($this, $validators);
+        return new $className($this);
     }
 
-    public function addValidator(string $type, string $name, Closure $validator): void
+    public function addCustomValidator(string $type, string $name, Closure $validator): void
     {
-        $this->customValidators[$type] = $this->customValidators[$type] ?? [];
-        $this->customValidators[$type][$name] = $validator;
+        $this->customValidatorFns[$type] = $this->customValidatorFns[$type] ?? [];
+        $this->customValidatorFns[$type][$name] = $validator;
     }
 
     public function getCustomValidator(string $type, string $name): Closure
     {
-        if (!array_key_exists($name, $this->customValidators[$type] ?? [])) {
+        if (!array_key_exists($name, $this->customValidatorFns[$type] ?? [])) {
             throw new \Exception("Custom method doesn't exist");
         }
-        return $this->customValidators[$type][$name];
+        return $this->customValidatorFns[$type][$name];
     }
 
     public function string(): StringValidator
     {
         /** @var StringValidator $validator */
-        $validator = $this->make('string', [fn($data) => is_string($data) || $data === null]);
+        $validator = $this->make('string');
         return $validator;
     }
 
     public function number(): NumberValidator
     {
         /** @var NumberValidator $validator */
-        $validator = $this->make('number', [fn($data) => is_integer($data) || $data === null]);
+        $validator = $this->make('number');
         return $validator;
     }
 
     public function array(): ArrayValidator
     {
         /** @var ArrayValidator $validator */
-        $validator = $this->make('array', [fn($data) => is_array($data) || $data === null]);
+        $validator = $this->make('array');
         return $validator;
     }
 }

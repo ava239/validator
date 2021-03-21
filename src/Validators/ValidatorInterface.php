@@ -6,7 +6,7 @@ use Hexlet\Validator\Validator;
 
 interface ValidatorInterface
 {
-    public function __construct(Validator $parent, array $validators = []);
+    public function __construct(Validator $parent);
 
     /**
      * @param mixed $data

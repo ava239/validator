@@ -2,38 +2,41 @@
 
 namespace Hexlet\Validator\Validators;
 
+use Hexlet\Validator\Validator;
+
 class ArrayValidator extends ValidatorBase implements ValidatorInterface
 {
-    protected string $type = 'array';
+    public string $type = 'array';
+
+    public function __construct(Validator $parent)
+    {
+        parent::__construct($parent);
+        $this->addValidator(fn($data) => is_array($data) || $data === null);
+    }
 
     public function sizeof(int $size): ArrayValidator
     {
-        /** @var ArrayValidator $validator */
-        $validator = $this->applyValidator(function ($data) use ($size): bool {
-            return count($data) >= $size;
-        }, 'sizeof', true);
-        return $validator;
+        $this->addValidator(fn($data) => count($data) >= $size);
+        return $this;
     }
 
     public function required(): ArrayValidator
     {
-        /** @var ArrayValidator $validator */
-        $validator = $this->applyValidator(fn($data) => is_array($data), 'required', true);
-        return $validator;
+        $this->addValidator(fn($data) => is_array($data));
+        return $this;
     }
 
     /**
-     * @param  ValidatorInterface[]  $shape
+     * @param  ValidatorInterface[] $shape
      * @return ArrayValidator
      */
-    public function shape(array $shape): ArrayValidator
+    public function shape($shape): ArrayValidator
     {
-        /** @var ArrayValidator $validator */
-        $validator = $this->applyValidator(fn($data) => array_reduce(
+        $this->addValidator(fn($data) => array_reduce(
             array_keys($shape),
             fn($acc, $field) => $acc && $shape[$field]->isValid($data[$field]),
             true
-        ), 'shape', true);
-        return $validator;
+        ));
+        return $this;
     }
 }

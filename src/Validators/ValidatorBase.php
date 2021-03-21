@@ -7,15 +7,19 @@ use Hexlet\Validator\Validator;
 
 class ValidatorBase implements ValidatorInterface
 {
-
     protected Validator $parent;
-    protected string $type;
-    protected array $validators = [];
+    /** @var Closure[] $validators */
+    public $validators = [];
+    public string $type;
 
-    public function __construct(Validator $parent, array $validators = [])
+    public function __construct(Validator $parent)
     {
-        $this->validators = $validators;
         $this->parent = $parent;
+    }
+
+    public function addValidator(Closure $validator): void
+    {
+        $this->validators = [...$this->validators, $validator];
     }
 
     /**
@@ -25,26 +29,20 @@ class ValidatorBase implements ValidatorInterface
      */
     public function test(string $name, ...$params): ValidatorInterface
     {
-        return $this->applyValidator(
-            fn($data) => $this->parent->getCustomValidator($this->type, $name)($data, ...$params),
-            $name
-        );
+        $this->addValidator(fn($data) => $this->parent->getCustomValidator($this->type, $name)($data, ...$params));
+        return $this;
     }
 
-    protected function applyValidator(Closure $validator, string $name, bool $mutate = false): ValidatorInterface
-    {
-        $validators = $this->validators;
-        $validators[$name] = $validator;
-        if ($mutate) {
-            $this->validators = $validators;
-        }
-        return new static($this->parent, $validators);
-    }
-
+    /**
+     * @param mixed $data
+     * @return bool
+     */
     public function isValid($data): bool
     {
-        return array_reduce($this->validators, function ($acc, $fn) use ($data): bool {
-            return (bool) $acc && (bool) $fn($data);
-        }, true);
+        return array_reduce(
+            $this->validators,
+            fn($acc, Closure $fn) => $acc && (bool) $fn($data),
+            true
+        );
     }
 }

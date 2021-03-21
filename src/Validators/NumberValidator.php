@@ -2,32 +2,33 @@
 
 namespace Hexlet\Validator\Validators;
 
+use Hexlet\Validator\Validator;
+
 class NumberValidator extends ValidatorBase implements ValidatorInterface
 {
-    protected string $type = 'number';
+    public string $type = 'number';
+
+    public function __construct(Validator $parent)
+    {
+        parent::__construct($parent);
+        $this->addValidator(fn($data) => is_integer($data) || $data === null);
+    }
 
     public function positive(): NumberValidator
     {
-        /** @var NumberValidator $validator */
-        $validator = $this->applyValidator(function ($data): bool {
-            return !is_int($data) || $data > 0;
-        }, 'positive', true);
-        return $validator;
+        $this->addValidator(fn($data) => !is_int($data) || $data > 0);
+        return $this;
     }
 
     public function range(int $min, int $max): NumberValidator
     {
-        /** @var NumberValidator $validator */
-        $validator = $this->applyValidator(function ($data) use ($min, $max): bool {
-            return $data >= $min && $data <= $max;
-        }, 'range');
-        return $validator;
+        $this->addValidator(fn($data) => $data >= $min && $data <= $max);
+        return $this;
     }
 
     public function required(): NumberValidator
     {
-        /** @var NumberValidator $validator */
-        $validator = $this->applyValidator(fn($data) => is_integer($data), 'required', true);
-        return $validator;
+        $this->addValidator(fn($data) => is_integer($data));
+        return $this;
     }
 }

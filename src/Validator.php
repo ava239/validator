@@ -19,7 +19,7 @@ class Validator
         return new $className($this);
     }
 
-    public function addCustomValidator(string $type, string $name, Closure $validator): void
+    public function addValidator(string $type, string $name, Closure $validator): void
     {
         $this->customValidatorFns[$type] = $this->customValidatorFns[$type] ?? [];
         $this->customValidatorFns[$type][$name] = $validator;

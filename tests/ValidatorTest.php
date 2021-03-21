@@ -105,14 +105,14 @@ class ValidatorTest extends TestCase
         $v = new Validator();
 
         $fn = fn($value, $start) => str_starts_with($value, $start);
-        $v->addCustomValidator('string', 'startWith', $fn);
+        $v->addValidator('string', 'startWith', $fn);
 
         $schema = $v->string()->test('startWith', 'H');
         $this->assertFalse($schema->isValid('exlet'));
         $this->assertTrue($schema->isValid('Hexlet'));
 
         $fn = fn($value, $min) => $value >= $min;
-        $v->addCustomValidator('number', 'min', $fn);
+        $v->addValidator('number', 'min', $fn);
 
         $schema = $v->number()->test('min', 5);
         $this->assertFalse($schema->isValid(4));

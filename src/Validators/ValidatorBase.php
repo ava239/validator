@@ -36,7 +36,7 @@ class ValidatorBase implements ValidatorInterface
     {
         return array_reduce(
             $this->validators,
-            fn($acc, Closure $fn) => $acc && (bool) $fn($data),
+            fn(bool $acc, Closure $fn) => $acc && $fn($data),
             true
         );
     }

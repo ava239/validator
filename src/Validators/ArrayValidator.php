@@ -34,7 +34,7 @@ class ArrayValidator extends ValidatorBase implements ValidatorInterface
     {
         $this->addValidator(fn($data) => array_reduce(
             array_keys($shape),
-            fn($acc, $field) => $acc && $shape[$field]->isValid($data[$field]),
+            fn(bool $acc, $field) => $acc && $shape[$field]->isValid($data[$field]),
             true
         ));
         return $this;

@@ -9,9 +9,9 @@ Usage example:
 ```php
 <?php
 
-use Hexlet\Validator\Validator;
+use Ava239\Validator\Validator;
 
-$v = new \Hexlet\Validator\Validator();
+$v = new \Ava239\Validator\Validator();
 
 // strings
 $schema = $v->required()->string();

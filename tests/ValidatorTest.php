@@ -122,4 +122,70 @@ class ValidatorTest extends TestCase
         $this->assertFalse($schema->isValid(4));
         $this->assertTrue($schema->isValid(6));
     }
+
+    public function testStringErrors(): void
+    {
+        $v = new Validator();
+        $schema = $v->string();
+        $this->assertEquals([], $schema->getErrors());
+
+        $this->assertEquals(['valid' => 'is_string'], $schema->validate(1)->getErrors());
+
+        $message = 'test message';
+
+        $this->assertEquals(['required' => $message], $schema->required($message)->validate(null)->getErrors());
+
+        $errors = $schema->required()->minLength(5)->contains('what', $message)->validate(1)->getErrors();
+        $this->assertEquals(['valid' => 'is_string', 'contains' => $message], $errors);
+    }
+
+    public function testNumberErrors(): void
+    {
+        $v = new Validator();
+        $schema = $v->number();
+
+        $this->assertEquals(['valid' => 'is_number'], $schema->validate('x')->getErrors());
+
+        $messages = ['test message', 'test message 2'];
+
+        $this->assertEquals(['required' => $messages[0]], $schema->required($messages[0])->validate(null)->getErrors());
+
+        $errors = $schema->required()->positive($messages[0])->range(-1, 0, $messages[1])->validate(-11)->getErrors();
+        $this->assertEquals(['in_range' => $messages[1], 'is_positive' => $messages[0]], $errors);
+    }
+
+    public function testArrayErrors(): void
+    {
+        $v = new Validator();
+        $schema = $v->array();
+
+        $this->assertEquals(['valid' => 'is_array'], $schema->validate('x')->getErrors());
+
+        $message = 'test message';
+        $expected = ['sizeof' => $message];
+
+        $this->assertEquals($expected, $schema->required()->sizeof(3, $message)->validate([])->getErrors());
+    }
+
+    public function testShapeErrors(): void
+    {
+        $v = new Validator();
+        $schema = $v->array();
+
+        $message = 'test';
+
+        $schema->shape([
+            'name' => $v->string()->required("name {$message}"),
+            'age' => $v->number()->positive("age {$message}"),
+            'surname' => $v->string()->required("surname {$message}"),
+        ], $message);
+        $expected = [
+            'shape' => $message,
+            'shape.age' => [
+                'is_positive' => "age {$message}",
+            ],
+        ];
+
+        $this->assertEquals($expected, $schema->validate(['age' => -1])->getErrors());
+    }
 }

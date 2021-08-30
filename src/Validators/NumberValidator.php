@@ -16,30 +16,30 @@ class NumberValidator extends ValidatorBase implements ValidatorInterface
         $this->parent = $parent;
         $this->addValidator(function ($data) {
             return is_integer($data) || $data === null;
-        });
+        }, 'valid', 'is_number');
     }
 
-    public function positive(): NumberValidator
+    public function positive(string $message = null): NumberValidator
     {
         $this->addValidator(function ($data) {
             return !is_int($data) || $data > 0;
-        });
+        }, 'is_positive', $message);
         return $this;
     }
 
-    public function range(int $min, int $max): NumberValidator
+    public function range(int $min, int $max, string $message = null): NumberValidator
     {
         $this->addValidator(function ($data) use ($min, $max) {
             return $data >= $min && $data <= $max;
-        });
+        }, 'in_range', $message);
         return $this;
     }
 
-    public function required(): NumberValidator
+    public function required(string $message = null): NumberValidator
     {
         $this->addValidator(function ($data) {
             return is_integer($data);
-        });
+        }, 'required', $message);
         return $this;
     }
 }

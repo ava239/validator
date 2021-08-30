@@ -7,20 +7,20 @@ use Ava239\Validator\Validator;
 
 class ValidatorBase implements ValidatorInterface
 {
-    /**
-     * @var Validator
-     */
+    /** @var Validator $parent */
     protected $parent;
-    /** @var Closure[] $validators */
+    /** @var array $validators */
     public $validators = [];
-    /**
-     * @var string
-     */
+    /** @var string[] $errors */
+    protected $errors = [];
+    /** @var string $type */
     public $type;
+    /** @var bool $valid */
+    private $valid = true;
 
-    public function addValidator(Closure $validator): void
+    public function addValidator(Closure $validator, string $name, string $message = null): void
     {
-        $this->validators = array_merge($this->validators, [$validator]);
+        $this->validators = array_merge($this->validators, [$name => [$validator, $message]]);
     }
 
     /**
@@ -32,7 +32,28 @@ class ValidatorBase implements ValidatorInterface
     {
         $this->addValidator(function ($data) use ($name, $params) {
             return $this->parent->getCustomValidator($this->type, $name)($data, ...$params);
-        });
+        }, $name);
+        return $this;
+    }
+
+    /**
+     * @param  mixed  $data
+     */
+    public function validate($data): ValidatorInterface
+    {
+        $this->errors = [];
+        $this->valid = array_reduce(
+            array_keys($this->validators),
+            function (bool $acc, string $key) use ($data) {
+                [$fn, $message] = $this->validators[$key];
+                $result = $fn($data, $this->errors);
+                if (!$result) {
+                    $this->errors = array_merge($this->errors, [$key => $message]);
+                }
+                return $acc && $result;
+            },
+            true
+        );
         return $this;
     }
 
@@ -42,12 +63,14 @@ class ValidatorBase implements ValidatorInterface
      */
     public function isValid($data): bool
     {
-        return array_reduce(
-            $this->validators,
-            function (bool $acc, Closure $fn) use ($data) {
-                return $acc && $fn($data);
-            },
-            true
-        );
+        $this->validate($data);
+        return $this->valid;
+    }
+
+    public function getErrors(): array
+    {
+        $errors = array_filter($this->errors);
+        ksort($errors);
+        return $errors;
     }
 }

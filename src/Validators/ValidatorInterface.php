@@ -9,4 +9,6 @@ interface ValidatorInterface
      * @return bool
      */
     public function isValid($data): bool;
+
+    public function getErrors(): array;
 }

@@ -16,30 +16,30 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
         $this->parent = $parent;
         $this->addValidator(function ($data) {
             return is_string($data) || $data === null;
-        });
+        }, 'valid', 'is_string');
     }
 
-    public function contains(string $text): StringValidator
+    public function contains(string $text, string $message = null): StringValidator
     {
         $this->addValidator(function ($data) use ($text) {
             return str_contains($data, $text);
-        });
+        }, 'contains', $message);
         return $this;
     }
 
-    public function minLength(int $length): StringValidator
+    public function minLength(int $length, string $message = null): StringValidator
     {
         $this->addValidator(function ($data) use ($length) {
             return mb_strlen($data) >= $length;
-        });
+        }, 'min_length', $message);
         return $this;
     }
 
-    public function required(): StringValidator
+    public function required(string $message = null): StringValidator
     {
         $this->addValidator(function ($data) {
             return mb_strlen($data) > 0;
-        });
+        }, 'required', $message);
         return $this;
     }
 }

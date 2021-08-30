@@ -30,6 +30,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($schema->isValid(null));
         $this->assertFalse($schema->isValid(''));
 
+        $this->assertTrue($schema->maxLength(30)->isValid('what does'));
         $this->assertFalse($schema->minLength(5)->isValid('what'));
         $this->assertTrue($schema->isValid('what does'));
 

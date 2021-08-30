@@ -35,6 +35,14 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
         return $this;
     }
 
+    public function maxLength(int $length, string $message = null): StringValidator
+    {
+        $this->addValidator(function ($data) use ($length) {
+            return mb_strlen($data) <= $length;
+        }, 'max_length', $message);
+        return $this;
+    }
+
     public function required(string $message = null): StringValidator
     {
         $this->addValidator(function ($data) {

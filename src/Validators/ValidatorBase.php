@@ -1,20 +1,26 @@
 <?php
 
-namespace Hexlet\Validator\Validators;
+namespace Ava239\Validator\Validators;
 
 use Closure;
-use Hexlet\Validator\Validator;
+use Ava239\Validator\Validator;
 
 class ValidatorBase implements ValidatorInterface
 {
-    protected Validator $parent;
+    /**
+     * @var Validator
+     */
+    protected $parent;
     /** @var Closure[] $validators */
     public $validators = [];
-    public string $type;
+    /**
+     * @var string
+     */
+    public $type;
 
     public function addValidator(Closure $validator): void
     {
-        $this->validators = [...$this->validators, $validator];
+        $this->validators = array_merge($this->validators, [$validator]);
     }
 
     /**
@@ -24,19 +30,23 @@ class ValidatorBase implements ValidatorInterface
      */
     public function test(string $name, ...$params): ValidatorInterface
     {
-        $this->addValidator(fn($data) => $this->parent->getCustomValidator($this->type, $name)($data, ...$params));
+        $this->addValidator(function ($data) use ($name, $params) {
+            return $this->parent->getCustomValidator($this->type, $name)($data, ...$params);
+        });
         return $this;
     }
 
     /**
-     * @param mixed $data
+     * @param  mixed  $data
      * @return bool
      */
     public function isValid($data): bool
     {
         return array_reduce(
             $this->validators,
-            fn(bool $acc, Closure $fn) => $acc && $fn($data),
+            function (bool $acc, Closure $fn) use ($data) {
+                return $acc && $fn($data);
+            },
             true
         );
     }

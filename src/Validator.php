@@ -1,16 +1,19 @@
 <?php
 
-namespace Hexlet\Validator;
+namespace Ava239\Validator;
 
 use Closure;
-use Hexlet\Validator\Validators\ArrayValidator;
-use Hexlet\Validator\Validators\NumberValidator;
-use Hexlet\Validator\Validators\StringValidator;
-use Hexlet\Validator\Validators\ValidatorInterface;
+use Ava239\Validator\Validators\ArrayValidator;
+use Ava239\Validator\Validators\NumberValidator;
+use Ava239\Validator\Validators\StringValidator;
+use Ava239\Validator\Validators\ValidatorInterface;
 
 class Validator
 {
-    private array $customValidatorFns = [];
+    /**
+     * @var array
+     */
+    private $customValidatorFns = [];
 
     public function make(string $type): ValidatorInterface
     {

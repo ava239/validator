@@ -1,6 +1,6 @@
 <?php
 
-namespace Hexlet\Validator\Validators;
+namespace Ava239\Validator\Validators;
 
 interface ValidatorInterface
 {

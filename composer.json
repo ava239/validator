@@ -1,5 +1,5 @@
 {
-  "name": "hexlet/code",
+  "name": "ava239/validator",
   "bin": ["bin/validator"],
   "type": "library",
   "authors": [
@@ -15,17 +15,15 @@
   },
   "autoload": {
     "psr-4": {
-      "Hexlet\\Validator\\": "src",
-      "Hexlet\\Validator\\Tests\\": "tests"
+      "Ava239\\Validator\\": "src",
+      "Ava239\\Validator\\Tests\\": "tests"
     }
   },
   "require": {
-    "tightenco/collect": "^5.6",
-    "nesbot/carbon": "^2.32.2",
-    "symfony/string": "^5.1",
-    "phpstan/phpstan": "^0.12.65"
+    "php": ">=7.3"
   },
   "require-dev": {
+    "phpstan/phpstan": "^0.12.65",
     "phpstan/phpstan-phpunit": "^0.12.16",
     "phpstan/extension-installer": "^1.0",
     "symfony/var-dumper": "^4.0",

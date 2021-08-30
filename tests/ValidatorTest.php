@@ -1,8 +1,8 @@
 <?php
 
-namespace Hexlet\Validator\Tests;
+namespace Ava239\Validator\Tests;
 
-use Hexlet\Validator\Validator;
+use Ava239\Validator\Validator;
 use PHPUnit\Framework\TestCase;
 
 class ValidatorTest extends TestCase
@@ -11,7 +11,7 @@ class ValidatorTest extends TestCase
     {
         $validator = new Validator();
 
-        $this->assertEquals(get_class($validator), Validator::class);
+        $this->assertEquals(Validator::class, get_class($validator));
     }
 
     public function testString(): void
@@ -104,14 +104,18 @@ class ValidatorTest extends TestCase
     {
         $v = new Validator();
 
-        $fn = fn($value, $start) => str_starts_with($value, $start);
+        $fn = function ($value, $start) {
+            return str_starts_with($value, $start);
+        };
         $v->addValidator('string', 'startWith', $fn);
 
         $schema = $v->string()->test('startWith', 'H');
         $this->assertFalse($schema->isValid('exlet'));
         $this->assertTrue($schema->isValid('Hexlet'));
 
-        $fn = fn($value, $min) => $value >= $min;
+        $fn = function ($value, $min) {
+            return $value >= $min;
+        };
         $v->addValidator('number', 'min', $fn);
 
         $schema = $v->number()->test('min', 5);

@@ -30,9 +30,10 @@ class ValidatorBase implements ValidatorInterface
      */
     public function test(string $name, ...$params): ValidatorInterface
     {
-        $this->addValidator(function ($data) use ($name, $params) {
-            return $this->parent->getCustomValidator($this->type, $name)($data, ...$params);
-        }, $name);
+        [$validator, $message] = $this->parent->getCustomValidator($this->type, $name);
+        $this->addValidator(function ($data) use ($validator, $params) {
+            return $validator($data, ...$params);
+        }, $name, $message);
         return $this;
     }
 

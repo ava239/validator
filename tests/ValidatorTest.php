@@ -189,4 +189,19 @@ class ValidatorTest extends TestCase
 
         $this->assertEquals($expected, $schema->validate(['age' => -1])->getErrors());
     }
+
+    public function testCustomErrors(): void
+    {
+        $v = new Validator();
+
+        $fn = function ($value, $start) {
+            return str_starts_with($value, $start);
+        };
+        $message = 'test msg';
+        $v->addValidator('string', 'startWith', $fn, $message);
+
+        $schema = $v->string()->test('startWith', 'H');
+
+        $this->assertEquals(['startWith' => $message], $schema->validate('exlet')->getErrors());
+    }
 }

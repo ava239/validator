@@ -22,13 +22,13 @@ class Validator
         return new $className($this);
     }
 
-    public function addValidator(string $type, string $name, Closure $validator): void
+    public function addValidator(string $type, string $name, Closure $validator, string $message = null): void
     {
         $this->customValidatorFns[$type] = $this->customValidatorFns[$type] ?? [];
-        $this->customValidatorFns[$type][$name] = $validator;
+        $this->customValidatorFns[$type][$name] = [$validator, $message];
     }
 
-    public function getCustomValidator(string $type, string $name): Closure
+    public function getCustomValidator(string $type, string $name): array
     {
         if (!array_key_exists($name, $this->customValidatorFns[$type] ?? [])) {
             throw new \Exception("Custom method doesn't exist");

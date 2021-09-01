@@ -68,10 +68,28 @@ class ValidatorBase implements ValidatorInterface
         return $this->valid;
     }
 
-    public function getErrors(): array
+    public function getErrors(bool $flat = false): array
     {
         $errors = array_filter($this->errors);
         ksort($errors);
-        return $errors;
+        return $flat ? $this->flatten($errors) : $errors;
+    }
+
+    private function flatten(array $array, float $depth = INF): array
+    {
+        $result = [];
+        foreach ($array as $item) {
+            if (!is_array($item)) {
+                $result[] = $item;
+            } else {
+                $values = $depth == 1
+                    ? array_values($item)
+                    : self::flatten($item, $depth - 1);
+                foreach ($values as $value) {
+                    $result[] = $value;
+                }
+            }
+        }
+        return $result;
     }
 }

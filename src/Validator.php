@@ -20,6 +20,12 @@ class Validator
         return new $className($this, $name);
     }
 
+    /**
+     * @param  string  $type
+     * @param  string  $name
+     * @param  Closure  $validator
+     * @param  string|null  $message
+     */
     public function addValidator(string $type, string $name, Closure $validator, string $message = null): void
     {
         $this->customValidatorFns[$type] = $this->customValidatorFns[$type] ?? [];
@@ -34,6 +40,10 @@ class Validator
         return $this->customValidatorFns[$type][$name];
     }
 
+    /**
+     * @param  string|null  $name
+     * @return StringValidator
+     */
     public function string(string $name = null): StringValidator
     {
         /** @var StringValidator $validator */
@@ -41,6 +51,10 @@ class Validator
         return $validator;
     }
 
+    /**
+     * @param  string|null  $name
+     * @return NumberValidator
+     */
     public function number(string $name = null): NumberValidator
     {
         /** @var NumberValidator $validator */
@@ -48,6 +62,10 @@ class Validator
         return $validator;
     }
 
+    /**
+     * @param  string|null  $name
+     * @return ArrayValidator
+     */
     public function array(string $name = null): ArrayValidator
     {
         /** @var ArrayValidator $validator */

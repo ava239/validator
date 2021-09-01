@@ -76,6 +76,10 @@ class ValidatorBase implements ValidatorInterface
         return $this->valid;
     }
 
+    /**
+     * @param  bool  $flat
+     * @return array
+     */
     public function getErrors(bool $flat = false): array
     {
         $errors = array_filter($this->errors);

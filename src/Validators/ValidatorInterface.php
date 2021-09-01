@@ -10,10 +10,15 @@ interface ValidatorInterface
      */
     public function isValid($data): bool;
 
-    public function getErrors(): array;
+    /**
+     * @param  bool  $flat
+     * @return array
+     */
+    public function getErrors(bool $flat = false): array;
 
     /**
      * @param  mixed  $data
+     * @return ValidatorInterface
      */
     public function validate($data): ValidatorInterface;
 }

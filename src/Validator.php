@@ -10,16 +10,14 @@ use Ava239\Validator\Validators\ValidatorInterface;
 
 class Validator
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $customValidatorFns = [];
 
-    public function make(string $type): ValidatorInterface
+    public function make(string $type, string $name = null): ValidatorInterface
     {
         $typeName = ucfirst($type);
         $className = __NAMESPACE__ . "\\Validators\\{$typeName}Validator";
-        return new $className($this);
+        return new $className($this, $name);
     }
 
     public function addValidator(string $type, string $name, Closure $validator, string $message = null): void
@@ -36,24 +34,24 @@ class Validator
         return $this->customValidatorFns[$type][$name];
     }
 
-    public function string(): StringValidator
+    public function string(string $name = null): StringValidator
     {
         /** @var StringValidator $validator */
-        $validator = $this->make('string');
+        $validator = $this->make('string', $name);
         return $validator;
     }
 
-    public function number(): NumberValidator
+    public function number(string $name = null): NumberValidator
     {
         /** @var NumberValidator $validator */
-        $validator = $this->make('number');
+        $validator = $this->make('number', $name);
         return $validator;
     }
 
-    public function array(): ArrayValidator
+    public function array(string $name = null): ArrayValidator
     {
         /** @var ArrayValidator $validator */
-        $validator = $this->make('array');
+        $validator = $this->make('array', $name);
         return $validator;
     }
 }

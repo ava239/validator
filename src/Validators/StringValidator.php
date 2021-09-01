@@ -6,14 +6,12 @@ use Ava239\Validator\Validator;
 
 class StringValidator extends ValidatorBase implements ValidatorInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     public $type = 'string';
 
-    public function __construct(Validator $parent)
+    public function __construct(Validator $parent, string $name = null)
     {
-        $this->parent = $parent;
+        parent::__construct($parent, $name);
         $this->addValidator(function ($data) {
             return is_string($data) || $data === null;
         }, 'valid', 'is_string');

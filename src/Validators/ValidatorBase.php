@@ -9,6 +9,8 @@ class ValidatorBase implements ValidatorInterface
 {
     /** @var Validator $parent */
     protected $parent;
+    /** @var string|null $fieldName */
+    protected $fieldName = null;
     /** @var array $validators */
     public $validators = [];
     /** @var string[] $errors */
@@ -17,6 +19,12 @@ class ValidatorBase implements ValidatorInterface
     public $type;
     /** @var bool $valid */
     private $valid = true;
+
+    public function __construct(Validator $parent, string $name = null)
+    {
+        $this->parent = $parent;
+        $this->fieldName = $name;
+    }
 
     public function addValidator(Closure $validator, string $name, string $message = null): void
     {
@@ -72,6 +80,12 @@ class ValidatorBase implements ValidatorInterface
     {
         $errors = array_filter($this->errors);
         ksort($errors);
+        $errors = $this->arrayMapRecursive(function ($element) {
+            if (!is_string($element)) {
+                return $element;
+            }
+            return preg_replace('~{{name}}~', $this->fieldName ?? '', $element);
+        }, $errors);
         return $flat ? $this->flatten($errors) : $errors;
     }
 
@@ -91,5 +105,18 @@ class ValidatorBase implements ValidatorInterface
             }
         }
         return $result;
+    }
+
+    private function arrayMapRecursive(Closure $callback, array $array): array
+    {
+        $output = [];
+        foreach ($array as $key => $data) {
+            if (is_array($data)) {
+                $output[$key] = self::arrayMapRecursive($callback, $data);
+            } else {
+                $output[$key] = $callback($data);
+            }
+        }
+        return $output;
     }
 }

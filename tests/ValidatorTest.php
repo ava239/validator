@@ -197,11 +197,13 @@ class ValidatorTest extends TestCase
         $fn = function ($value, $start) {
             return str_starts_with($value, $start);
         };
-        $message = 'test msg';
+        $message = 'test msg {{name}}';
+        $name = '77th';
+        $expected = 'test msg 77th';
         $v->addValidator('string', 'startWith', $fn, $message);
 
-        $schema = $v->string()->test('startWith', 'H');
+        $schema = $v->string($name)->test('startWith', 'H');
 
-        $this->assertEquals(['startWith' => $message], $schema->validate('exlet')->getErrors());
+        $this->assertEquals(['startWith' => $expected], $schema->validate('exlet')->getErrors());
     }
 }

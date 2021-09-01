@@ -9,9 +9,9 @@ class ArrayValidator extends ValidatorBase implements ValidatorInterface
     /** @var string $type */
     public $type = 'array';
 
-    public function __construct(Validator $parent)
+    public function __construct(Validator $parent, string $name = null)
     {
-        $this->parent = $parent;
+        parent::__construct($parent, $name);
         $this->addValidator(function ($data) {
             return is_array($data) || $data === null;
         }, 'valid', 'is_array');

@@ -83,7 +83,6 @@ class ValidatorBase implements ValidatorInterface
     public function getErrors(bool $flat = false): array
     {
         $errors = array_filter($this->errors);
-        ksort($errors);
         $errors = $this->arrayMapRecursive(function ($element) {
             if (!is_string($element)) {
                 return $element;

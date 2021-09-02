@@ -2,7 +2,7 @@
   "name": "ava239/validator",
   "bin": ["bin/validator"],
   "type": "library",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "authors": [
     {
       "name": "Dmitrii Oliferchuk",

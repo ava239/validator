@@ -152,7 +152,7 @@ class ValidatorTest extends TestCase
         $this->assertEquals(['required' => $messages[0]], $schema->required($messages[0])->validate(null)->getErrors());
 
         $errors = $schema->required()->positive($messages[0])->range(-1, 0, $messages[1])->validate(-11)->getErrors();
-        $this->assertEquals(['in_range' => $messages[1], 'is_positive' => $messages[0]], $errors);
+        $this->assertEquals(['range' => $messages[1], 'positive' => $messages[0]], $errors);
     }
 
     public function testArrayErrors(): void
@@ -183,7 +183,7 @@ class ValidatorTest extends TestCase
         $expected = [
             '_' => $message,
             'name.required' => "name {$message}",
-            'age.is_positive' => "age {$message}",
+            'age.positive' => "age {$message}",
             'surname.required' => "surname {$message}",
         ];
 
@@ -229,7 +229,7 @@ class ValidatorTest extends TestCase
 
         $expected = [
             '_' => $message,
-            'age.is_positive' => "age {$message}",
+            'age.positive' => "age {$message}",
             'name.required' => "name {$message}",
             'surname.required' => "surname {$message}",
             'passport._' => $message,

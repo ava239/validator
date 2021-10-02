@@ -83,38 +83,15 @@ class ValidatorBase implements ValidatorInterface
         return $this->valid;
     }
 
-    /**
-     * @param  bool  $flat
-     * @return array
-     */
-    public function getErrors(bool $flat = false): array
+    public function getErrors(): array
     {
         $errors = array_filter($this->errors);
-        $errors = $this->arrayMapRecursive(function ($element) {
+        return $this->arrayMapRecursive(function ($element) {
             if (!is_string($element)) {
                 return $element;
             }
             return preg_replace('~{{name}}~', $this->fieldName ?? '', $element);
         }, $errors);
-        return $flat ? $this->flatten($errors) : $errors;
-    }
-
-    private function flatten(array $array, float $depth = INF): array
-    {
-        $result = [];
-        foreach ($array as $item) {
-            if (!is_array($item)) {
-                $result[] = $item;
-            } else {
-                $values = $depth == 1
-                    ? array_values($item)
-                    : self::flatten($item, $depth - 1);
-                foreach ($values as $value) {
-                    $result[] = $value;
-                }
-            }
-        }
-        return $result;
     }
 
     private function arrayMapRecursive(Closure $callback, array $array): array

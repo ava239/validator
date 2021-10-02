@@ -29,7 +29,7 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
     {
         $this->addValidator(function ($data) use ($length) {
             return mb_strlen($data) >= $length;
-        }, 'min_length', $message);
+        }, 'minLength', $message);
         return $this;
     }
 
@@ -37,7 +37,7 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
     {
         $this->addValidator(function ($data) use ($length) {
             return mb_strlen($data) <= $length;
-        }, 'max_length', $message);
+        }, 'maxLength', $message);
         return $this;
     }
 

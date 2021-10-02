@@ -21,7 +21,7 @@ class NumberValidator extends ValidatorBase implements ValidatorInterface
     {
         $this->addValidator(function ($data) {
             return !is_int($data) || $data > 0;
-        }, 'is_positive', $message);
+        }, 'positive', $message);
         return $this;
     }
 
@@ -29,7 +29,7 @@ class NumberValidator extends ValidatorBase implements ValidatorInterface
     {
         $this->addValidator(function ($data) use ($min, $max) {
             return $data >= $min && $data <= $max;
-        }, 'in_range', $message);
+        }, 'range', $message);
         return $this;
     }
 

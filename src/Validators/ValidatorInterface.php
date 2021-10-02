@@ -11,10 +11,9 @@ interface ValidatorInterface
     public function isValid($data): bool;
 
     /**
-     * @param  bool  $flat
      * @return array
      */
-    public function getErrors(bool $flat = false): array;
+    public function getErrors(): array;
 
     /**
      * @param  mixed  $data

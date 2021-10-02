@@ -14,7 +14,7 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
         parent::__construct($parent, $name);
         $this->addValidator(function ($data) {
             return is_string($data) || $data === null;
-        }, 'valid', 'is_string');
+        }, 'valid', 'is_string', true);
     }
 
     public function contains(string $text, string $message = null): StringValidator

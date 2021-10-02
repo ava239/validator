@@ -136,8 +136,8 @@ class ValidatorTest extends TestCase
 
         $this->assertEquals(['required' => $message], $schema->required($message)->validate(null)->getErrors());
 
-        $errors = $schema->required()->minLength(5)->contains('what', $message)->validate(1)->getErrors();
-        $this->assertEquals(['valid' => 'is_string', 'contains' => $message], $errors);
+        $errors = $schema->required()->minLength(5)->contains('what', $message)->validate('1')->getErrors();
+        $this->assertEquals(['contains' => $message], $errors);
     }
 
     public function testNumberErrors(): void
@@ -181,10 +181,10 @@ class ValidatorTest extends TestCase
             'surname' => $v->string()->required("surname {$message}"),
         ], $message);
         $expected = [
-            'shape' => $message,
-            'shape.age' => [
-                'is_positive' => "age {$message}",
-            ],
+            '_' => $message,
+            'name.required' => "name {$message}",
+            'age.is_positive' => "age {$message}",
+            'surname.required' => "surname {$message}",
         ];
 
         $this->assertEquals($expected, $schema->validate(['age' => -1])->getErrors());
@@ -205,5 +205,47 @@ class ValidatorTest extends TestCase
         $schema = $v->string($name)->test('startWith', 'H');
 
         $this->assertEquals(['startWith' => $expected], $schema->validate('exlet')->getErrors());
+    }
+
+    public function testRecursiveShapeErrors(): void
+    {
+        $v = new Validator();
+        $schema = $v->array();
+
+        $message = 'test';
+
+        $schema->shape([
+            'name' => $v->string()->required("name {$message}"),
+            'age' => $v->number()->positive("age {$message}"),
+            'surname' => $v->string()->required("surname {$message}"),
+            'passport' => $v->array()->required()->shape([
+                'number' => $v->number()->required("number {$message}"),
+                'series' => $v->number()->required("series {$message}"),
+                'sub' => $v->array()->required()->shape([
+                    'num' => $v->number()->required("subnum"),
+                ], 'test sub')
+            ], $message),
+        ], $message);
+
+        $expected = [
+            '_' => $message,
+            'age.is_positive' => "age {$message}",
+            'name.required' => "name {$message}",
+            'surname.required' => "surname {$message}",
+            'passport._' => $message,
+            'passport.series.required' => "series {$message}",
+            'passport.number.valid' => "is_number",
+            'passport.sub._' => 'test sub',
+            'passport.sub.num.required' => 'subnum',
+        ];
+        $data = [
+            'age' => -1,
+            'passport' => [
+                'number' => '123',
+                'sub' => [],
+            ],
+        ];
+
+        $this->assertEquals($expected, $schema->validate($data)->getErrors());
     }
 }

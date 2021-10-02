@@ -14,7 +14,7 @@ class ArrayValidator extends ValidatorBase implements ValidatorInterface
         parent::__construct($parent, $name);
         $this->addValidator(function ($data) {
             return is_array($data) || $data === null;
-        }, 'valid', 'is_array');
+        }, 'valid', 'is_array', true);
     }
 
     public function sizeof(int $size, string $message = null): ArrayValidator
@@ -41,19 +41,18 @@ class ArrayValidator extends ValidatorBase implements ValidatorInterface
     {
         $this->addValidator(function ($data, &$errors) use ($shape, $message) {
             if (!is_array($data)) {
-                $errors = array_merge($errors, ["shape" => $message]);
+                $errors = $this->addErrors($errors, ["_" => $message]);
                 return false;
             }
             return array_reduce(
                 array_keys($shape),
                 function (bool $acc, $field) use ($data, $shape, &$errors, $message) {
                     if (!array_key_exists($field, $data)) {
-                        $errors = array_merge($errors, ["shape" => $message]);
-                        return false;
+                        $errors = $this->addErrors($errors, ["_" => $message]);
                     }
-                    $result = $shape[$field]->isValid($data[$field]);
+                    $result = $shape[$field]->isValid($data[$field] ?? null);
                     if (!$result) {
-                        $errors = array_merge($errors, ["shape.{$field}" => $shape[$field]->getErrors()]);
+                        $errors = $this->addErrors($errors, $shape[$field]->getErrors(), "{$field}.");
                     }
                     return $acc && $result;
                 },
@@ -61,5 +60,13 @@ class ArrayValidator extends ValidatorBase implements ValidatorInterface
             );
         }, '');
         return $this;
+    }
+
+    private function addErrors(array $oldErrors, array $errorList, string $prefix = ''): array
+    {
+        foreach ($errorList as $key => $val) {
+            $oldErrors["{$prefix}{$key}"] = $val;
+        }
+        return $oldErrors;
     }
 }

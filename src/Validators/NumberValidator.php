@@ -14,7 +14,7 @@ class NumberValidator extends ValidatorBase implements ValidatorInterface
         parent::__construct($parent, $name);
         $this->addValidator(function ($data) {
             return is_integer($data) || $data === null;
-        }, 'valid', 'is_number');
+        }, 'valid', 'is_number', true);
     }
 
     public function positive(string $message = null): NumberValidator

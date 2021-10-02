@@ -26,9 +26,9 @@ class ValidatorBase implements ValidatorInterface
         $this->fieldName = $name;
     }
 
-    public function addValidator(Closure $validator, string $name, string $message = null): void
+    public function addValidator(Closure $validator, string $name, string $message = null, bool $isFinal = false): void
     {
-        $this->validators = array_merge($this->validators, [$name => [$validator, $message]]);
+        $this->validators = array_merge($this->validators, [$name => [$validator, $message, $isFinal]]);
     }
 
     /**
@@ -51,17 +51,24 @@ class ValidatorBase implements ValidatorInterface
     public function validate($data): ValidatorInterface
     {
         $this->errors = [];
-        $this->valid = array_reduce(
+        [$this->valid] = array_reduce(
             array_keys($this->validators),
-            function (bool $acc, string $key) use ($data) {
-                [$fn, $message] = $this->validators[$key];
+            function (array $acc, string $key) use ($data) {
+                [$valid, $final] = $acc;
+                if ($final) {
+                    return $acc;
+                }
+                [$fn, $message, $isFinal] = $this->validators[$key];
                 $result = $fn($data, $this->errors);
                 if (!$result) {
                     $this->errors = array_merge($this->errors, [$key => $message]);
+                    if ($isFinal) {
+                        $final = true;
+                    }
                 }
-                return $acc && $result;
+                return [$valid && $result, $final];
             },
-            true
+            [true, false]
         );
         return $this;
     }

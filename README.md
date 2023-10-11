@@ -1,5 +1,5 @@
-[![Maintainability](https://api.codeclimate.com/v1/badges/d521639c6e75a3eeebb7/maintainability)](https://codeclimate.com/github/ava239/php-oop-project-lvl1/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/d521639c6e75a3eeebb7/test_coverage)](https://codeclimate.com/github/ava239/php-oop-project-lvl1/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9a08cc43b10ca962f95e/maintainability)](https://codeclimate.com/github/ava239/validator/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9a08cc43b10ca962f95e/test_coverage)](https://codeclimate.com/github/ava239/validator/test_coverage)
 
 # Validator library
 Inspired by [yup](https://github.com/jquense/yup) (JavaScript library)  

@@ -17,6 +17,7 @@ class Validator
     {
         $typeName = ucfirst($type);
         $className = __NAMESPACE__ . "\\Validators\\{$typeName}Validator";
+        /** @var ValidatorInterface */
         return new $className($this, $name);
     }
 

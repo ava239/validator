@@ -2,7 +2,7 @@
   "name": "ava239/validator",
   "bin": ["bin/validator"],
   "type": "library",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "authors": [
     {
       "name": "Dmitrii Oliferchuk",
@@ -21,14 +21,19 @@
     }
   },
   "require": {
-    "php": ">=7.3"
+    "php": ">=8.1"
   },
   "require-dev": {
-    "phpstan/phpstan": "^0.12.65",
-    "phpstan/phpstan-phpunit": "^0.12.16",
-    "phpstan/extension-installer": "^1.0",
-    "symfony/var-dumper": "^4.0",
-    "phpunit/phpunit": "^9.1.3",
+    "phpstan/phpstan": "^1.10.38",
+    "phpstan/phpstan-phpunit": "^1.3.15",
+    "phpstan/extension-installer": "^1.3.1",
+    "symfony/var-dumper": "^6.3.5",
+    "phpunit/phpunit": "^10.4.1",
     "squizlabs/php_codesniffer": "^3.5.5"
+  },
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    }
   }
 }

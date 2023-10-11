@@ -28,7 +28,7 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
     public function minLength(int $length, string $message = null): StringValidator
     {
         $this->addValidator(function ($data) use ($length) {
-            return mb_strlen($data) >= $length;
+            return mb_strlen($data ?? '') >= $length;
         }, 'minLength', $message);
         return $this;
     }
@@ -36,7 +36,7 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
     public function maxLength(int $length, string $message = null): StringValidator
     {
         $this->addValidator(function ($data) use ($length) {
-            return mb_strlen($data) <= $length;
+            return mb_strlen($data ?? '') <= $length;
         }, 'maxLength', $message);
         return $this;
     }
@@ -44,7 +44,7 @@ class StringValidator extends ValidatorBase implements ValidatorInterface
     public function required(string $message = null): StringValidator
     {
         $this->addValidator(function ($data) {
-            return mb_strlen($data) > 0;
+            return mb_strlen($data ?? '') > 0;
         }, 'required', $message);
         return $this;
     }
